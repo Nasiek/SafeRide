@@ -13,3 +13,6 @@
  *= require_tree .
  *= require_self
  */
+#mapid {
+    height: 300px;
+}

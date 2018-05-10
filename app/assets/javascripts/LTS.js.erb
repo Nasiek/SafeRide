@@ -1,0 +1,23 @@
+console.log("outside the function");
+var functioning = function lts(){
+console.log("reading me?");
+
+
+var mymap = L.map('mapid').setView(
+    [39.950782, -75.206876], 13);
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: <%= ENV["mapbox"] %>
+}).addTo(mymap);
+
+// graphhopper directions CDN 
+
+
+ // <script src="https://cdn.jsdelivr.net/npm/graphhopper-js-api-client/dist/graphhopper-client.js"></script>
+// window.onload = function () {  
+
+
+ };//end window onload function
