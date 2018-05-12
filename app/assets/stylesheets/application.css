@@ -14,6 +14,8 @@
  *= require_self
  */
 #mapid {
-    height: 500px;
-    width: 50%;
+    position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
 }
