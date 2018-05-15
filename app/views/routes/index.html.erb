@@ -145,14 +145,34 @@ var ltsgeoJSON = $.ajax({
         console.log(json);
         var drawRoute = json;
         var routeCoordinates = drawRoute.paths[0].points.coordinates;
-        
+
         console.log("routeCoordinates:",routeCoordinates);
+         calculate();
+
       })
       .catch(function(err) {
         console.error(err.message);
       });
 
 
+/// mapbox's own directions plugin
+function calculate(){
+var mapboxgl = require('mapbox-gl');
+var MapboxDirections = require('@mapbox/mapbox-gl-directions');
+
+var directions = new MapboxDirections({
+  accessToken: '<%=ENV['mapbox'] %>',
+  unit: 'metric',
+  profile: 'mapbox/cycling'
+});
+
+// var map = new mapboxgl.Map({
+//   container: 'map',
+//   style: 'mapbox://styles/mapbox/streets-v9'
+// });
+
+map.addControl(directions, 'top-left');          
+        };
 
   };
 </script>
