@@ -1,3 +1,45 @@
 // Place all the styles related to the routes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+    #toggle {
+        background: #fff;
+        position: absolute;
+        z-index: 1;
+        top: 10px;
+        right: 10px;
+        border-radius: 3px;
+        width: 120px;
+        border: 1px solid rgba(0,0,0,0.4);
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    #toggle a {
+        font-size: 13px;
+        color: #1794c1;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0,0,0,0.25);
+        text-align: center;
+    }
+
+    #toggle a:last-child {
+        border: none;
+    }
+
+    #toggle a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+    }
+
+    #toggle a.active {
+        background-color: #3887be;
+        color: #ffffff;
+    }
+
+    #toggle a.active:hover {
+        background: #3074a4;
+    }

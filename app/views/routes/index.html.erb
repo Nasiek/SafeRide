@@ -6,6 +6,12 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.js'></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/0.45.0/mapbox-gl.js"></script>
+
+    <!-- Turf.js cdn turns objects into geojson -->
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+
     <!-- the jquery to save the day -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <style>
@@ -19,7 +25,7 @@
 </head>
 <body>
 <div id='map'></div>
-
+<nav id="toggle"></nav>
 <script>
 mapboxgl.accessToken =  '<%=ENV['mapbox'] %>';
 
@@ -59,7 +65,7 @@ var ltsgeoJSON = $.ajax({
 
             // Create layer from source
               map.addLayer({
-                "id": "layer",
+                "id": "bikelayer",
                 "type": "line",
                 "source": "myData1",
                 "layout": {
@@ -67,10 +73,10 @@ var ltsgeoJSON = $.ajax({
                     "line-join": "round",
                     "line-cap": "round"
                 },
-              //   "paint": {
-              //       "line-color": "#cc2d45",
-                    // "line-width": 8
-              //   }
+                "paint": {
+                    "line-color": "#AEB6BF",
+                    "line-width": 1
+                }
                 
             });
             //   map.addLayer({
@@ -95,9 +101,36 @@ var ltsgeoJSON = $.ajax({
     // ltsgeoJSON;
     
  // });//ends onload function
+//toggle bike layer
+var toggleableLayerIds = [ 'bikelayer']; // add more layers
 
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
 
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
 
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    };
+
+    var layers = document.getElementById('toggle');
+    layers.appendChild(link);
+}
 
 
 
