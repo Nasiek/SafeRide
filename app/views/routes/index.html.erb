@@ -25,6 +25,8 @@
 </head>
 <body>
 <div id='map'></div>
+<div id='instructions'></div>
+
 <nav id="toggle"></nav>
 <script>
 mapboxgl.accessToken =  '<%=ENV['mapbox'] %>';
@@ -37,6 +39,79 @@ var map = new mapboxgl.Map({
 });
 
 map.addControl(new mapboxgl.FullscreenControl());
+
+//mapbox api request here
+    map.on('load', function() {
+  getRoute();
+});
+
+function getRoute() {
+  var start = [-75.171741, 39.9553278];
+  var end = [-75.2116433, 39.9497359];
+  var directionsRequest = 'https://api.mapbox.com/directions/v5/mapbox/cycling/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+  $.ajax({
+    method: 'GET',
+    url: directionsRequest,
+  }).done(function(data) {
+    var route = data.routes[0].geometry;
+    map.addLayer({
+      id: 'route',
+      type: 'line',
+      source: {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: route
+        }
+      },
+      paint: {
+        'line-width': 2
+      }
+    });
+    // this is where the code from the next step will go
+
+    map.addLayer({
+  id: 'start',
+  type: 'circle',
+  source: {
+    type: 'geojson',
+    data: {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: start
+      }
+    }
+  }
+});
+map.addLayer({
+  id: 'end',
+  type: 'circle',
+  source: {
+    type: 'geojson',
+    data: {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: end
+      }
+    }
+  }
+});
+// this is where the JavaScript from the next step will go
+
+var instructions = document.getElementById('instructions');
+console.log("instructions:",instructions);
+console.log("data:",data)
+
+var steps = data.routes[0].legs[0].steps;
+console.log("steps:",steps)
+steps.forEach(function(step) {
+  instructions.insertAdjacentHTML('beforeend', '<p>' + step.maneuver.instruction + '</p>');
+});
+  });
+
+}
 map.on('load', function() {
 
 
@@ -79,26 +154,11 @@ var ltsgeoJSON = $.ajax({
                 }
                 
             });
-            //   map.addLayer({
-            //     "id": "geolayer2",
-            //     "type": "line",
-            //     "source": "myData2",
-            //     "layout": {
-            //         "visibility": "visible",
-            //         "line-join": "round",
-            //         "line-cap": "round"
-            //     },
-            //     "paint": {
-            //         "line-color": "#2ECC71",
-            //         "line-width": 8
-            //     }
-                
-            // })
-        }) //onload
-    console.log("works?");
-    console.log("ltsgeoJSON",ltsgeoJSON);
+            }) //onload
+    // console.log("ltsgeoJSON",ltsgeoJSON);
     }); //lts done
-    // ltsgeoJSON;
+    
+    
     
  // });//ends onload function
 //toggle bike layer
@@ -160,54 +220,6 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
 <script type="text/javascript" src="
   https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
 
-<script>
-  window.onload = function() {
 
-    var ghRouting = new GraphHopper.Routing({
-      key: '<%= ENV['graphhopper']%>',
-      vehicle: "bike",
-      elevation: false
-    });
-
-    ghRouting.addPoint(new GHInput(39.9553278, -75.171741));
-    ghRouting.addPoint(new GHInput(39.9497359, -75.2116433));
-
-    ghRouting.doRequest()
-      .then(function(json) {
-        // Add your own result handling here
-        console.log(json);
-        var drawRoute = json;
-        var routeCoordinates = drawRoute.paths[0].points.coordinates;
-
-        console.log("routeCoordinates:",routeCoordinates);
-         calculate();
-
-      })
-      .catch(function(err) {
-        console.error(err.message);
-      });
-
-
-/// mapbox's own directions plugin
-function calculate(){
-var mapboxgl = require('mapbox-gl');
-var MapboxDirections = require('@mapbox/mapbox-gl-directions');
-
-var directions = new MapboxDirections({
-  accessToken: '<%=ENV['mapbox'] %>',
-  unit: 'metric',
-  profile: 'mapbox/cycling'
-});
-
-// var map = new mapboxgl.Map({
-//   container: 'map',
-//   style: 'mapbox://styles/mapbox/streets-v9'
-// });
-
-map.addControl(directions, 'top-left');          
-        };
-
-  };
-</script>
 </body>
 </html>
