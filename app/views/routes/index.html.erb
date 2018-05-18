@@ -45,15 +45,10 @@
 <nav id="toggle"></nav>
 <script>
     var hideDIR = function hider(){
-        // instructions = document.getElementById('instructions')
         console.log("hi");
         $( "#instructions" ).toggle();
-
-        // if (instructions.style.display:hide){
-        //     instructions.onclick=instructions.style.display:show        }
-        // }
+        
     }
-    //$( "#instructions" ).hide();
 mapboxgl.accessToken =  '<%=ENV['mapbox'] %>';
 
 //limit geocoding regionally
@@ -152,15 +147,21 @@ console.log(route);
 document.getElementById('zoomto').addEventListener('click', function() {
 
         // Geographic coordinates of the LineString
-        var coordinates = route.coordinates;
-        console.log("coordinates",coordinates);
+        var routecoordinates = route.coordinates;
+        console.log("routecoordinates",routecoordinates);
+        var routebounds = routecoordinates.reduce(function(routebounds, coord) {
+            return routebounds.extend(coord);
+        }, new mapboxgl.LngLatBounds(routecoordinates[0], routecoordinates[0]));
 
+        map.fitBounds(routebounds, {
+            padding: 20
         // Pass the first coordinates in the LineString to `lngLatBounds` &
         // wrap each coordinate pair in `extend` to include them in the bounds
         // result. A variation of this technique could be applied to zooming
         // to the bounds of multiple Points or Polygon geomteries - it just
         // requires wrapping all the coordinates with the extend method.
         
+    });
     });
 });
 
