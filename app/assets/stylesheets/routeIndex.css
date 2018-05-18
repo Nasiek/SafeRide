@@ -4,6 +4,7 @@
   height: 20px;
   border: 2px solid #fff;
   border-radius: 50%;
+  right: 20px;
   background: #3887be;
   pointer-events: none;
 }
@@ -20,3 +21,41 @@
   overflow-y: scroll;
   font-family: sans-serif;
 }
+
+#origin {
+	position: absolute;
+	height: 40px;
+	display: inline-block;
+	width: 100px;
+	left: 50%;
+	top: 2%;
+	z-index: 1;
+	background-color: "Antiquewhite";
+}
+
+#destination {
+	position: absolute;
+	display: inline-block;
+	height: 40px;
+	width: 100px;
+	left: 50%;
+	top: 6%;
+	z-index: 1;
+	background-color: "Antiquewhite";
+}
+#toggle{
+	position: absolute;
+	/*height: 30px;
+	width: 20px;
+*/	right: 60%;
+	top: 2%;
+	z-index: 1;
+	background-color: "Black";
+}
+/*#searchboxes {
+	position: absolute;
+	height: 50px;
+	width: 105px;
+	left: 50%;
+	z-index: 1;
+}*/

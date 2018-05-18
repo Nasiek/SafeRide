@@ -5,6 +5,9 @@
     <title>View a fullscreen map</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.js'></script>
+
+    //geocoding <script src='https://unpkg.com/mapbox@1.0.0-beta10/dist/mapbox-sdk.min.js'></script>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/0.45.0/mapbox-gl.js"></script>
 
     <!-- Turf.js cdn turns objects into geojson -->
@@ -26,11 +29,28 @@
 <body>
 <div id='map'></div>
 <div id='instructions'></div>
+<div id="searchboxes">
+<div id="origin">
+    <input id="searchOrig" type="text" placeholder="Origin">
+</div> 
+<div id="destination">
+    <input id="searchDes" type="text" placeholder="Destination">
+</div> 
+</div> 
 
 <nav id="toggle"></nav>
 <script>
 mapboxgl.accessToken =  '<%=ENV['mapbox'] %>';
-
+//add geocoding functions here
+var client = new MapboxClient('<%=ENV['mapbox'] %>');
+//forward geocoding
+var geocode = client.geocodeForward('Chester, NJ', function(err, data, res) {
+  // data is the geocoding result as parsed JSON
+  console.log("data:",data);
+  console.log("res:",res);
+  // res is the http response, including: status, headers and entity properties
+});
+geocode;
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/mapbox/outdoors-v9', //stylesheet location
