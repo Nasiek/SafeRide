@@ -29,38 +29,56 @@
 <body>
 <div id='map'></div>
 <div id='instructions'></div>
+<button id="hide" onclick='hideDIR()'></button>
 <div id="searchboxes">
 <div id="origin">
     <input id="searchOrig" type="text" placeholder="Origin">
 </div> 
 <div id="destination">
     <input id="searchDes" type="text" placeholder="Destination">
-</div> 
+</div>
+<button id='zoomto' class='btn-control'>Zoom to Route</nav>
+
+
 </div> 
 
 <nav id="toggle"></nav>
 <script>
+    var hideDIR = function hider(){
+        // instructions = document.getElementById('instructions')
+        console.log("hi");
+        $( "#instructions" ).toggle();
+
+        // if (instructions.style.display:hide){
+        //     instructions.onclick=instructions.style.display:show        }
+        // }
+    }
+    //$( "#instructions" ).hide();
 mapboxgl.accessToken =  '<%=ENV['mapbox'] %>';
+
+//limit geocoding regionally
+
 //add geocoding functions here
-var client = new MapboxClient('<%=ENV['mapbox'] %>');
+var client = new MapboxClient(mapboxgl.accessToken);
 //forward geocoding
-var geocode = client.geocodeForward('Chester, NJ', function(err, data, res) {
+var geocode = client.geocodeForward('Philadelphia, PA', function(err, data, res) {
   // data is the geocoding result as parsed JSON
   console.log("data:",data);
   console.log("res:",res);
   // res is the http response, including: status, headers and entity properties
 });
 geocode;
+
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mapbox/outdoors-v9', //stylesheet location
-    center: [-75.206876, 39.950782], // starting position
-    zoom: 13 // starting zoom
+    style: 'mapbox://styles/mapbox/outdoors-v9' //stylesheet location
+    // center: [-75.206876, 39.950782], // starting position
+    // zoom: 13 // starting zoom
 });
 
 map.addControl(new mapboxgl.FullscreenControl());
 
-//mapbox api request here
+//mapbox route api request here
     map.on('load', function() {
   getRoute();
 });
@@ -129,9 +147,26 @@ console.log("steps:",steps)
 steps.forEach(function(step) {
   instructions.insertAdjacentHTML('beforeend', '<p>' + step.maneuver.instruction + '</p>');
 });
-  });
+  //zoom to route
+console.log(route);
+document.getElementById('zoomto').addEventListener('click', function() {
 
-}
+        // Geographic coordinates of the LineString
+        var coordinates = route.coordinates;
+        console.log("coordinates",coordinates);
+
+        // Pass the first coordinates in the LineString to `lngLatBounds` &
+        // wrap each coordinate pair in `extend` to include them in the bounds
+        // result. A variation of this technique could be applied to zooming
+        // to the bounds of multiple Points or Polygon geomteries - it just
+        // requires wrapping all the coordinates with the extend method.
+        
+    });
+});
+
+  };// var route ends here
+
+//}
 map.on('load', function() {
 
 
@@ -143,7 +178,8 @@ console.log("geojson",geojson);
 var ltsgeoJSON = $.ajax({
     url: 'https://opendata.arcgis.com/datasets/113771ce9fa0424a8b529de9b74b1bc4_0.geojson'
     }).done(function(response){
-
+        var bounds = turf.bbox(response);
+        map.fitBounds(bounds, {padding: 2});
         console.log("response",response);
         console.log("response.features[0]",response.features[0]);
 
