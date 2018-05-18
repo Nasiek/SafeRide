@@ -75,7 +75,7 @@ var map = new mapboxgl.Map({
     // zoom: 13 // starting zoom
 });
 //limit geocode results
-map.addControl(new MapboxGeocoder({
+var origingeocode = map.addControl(new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
 
     // limit results to US
@@ -88,8 +88,10 @@ map.addControl(new MapboxGeocoder({
     // apply a client side filter to further limit results to those strictly within
     // the New South Wales region
     filter: function (item) {
-        // returns true if item contains New South Wales region
+        console.log("item:",item);
         return item.context.map(function (i) {
+            console.log("item.context.map:",item.context.map);
+            console.log("item.context",item.context);
             // id is in the form {index}.{id} per https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
             // find the `region` named `New South Wales`
             return (i.id.split('.').shift() === 'region' && (i.text === 'Pennsylvania' || 'New Jersey'));
