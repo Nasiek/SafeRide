@@ -35,16 +35,23 @@
 <button id="hide" onclick='hideDIR()'></button>
 <div id="searchboxes">
 <div id="origin">
-    <input id="searchOrig" type="text" placeholder="Origin">
+    <!-- <input id="searchOrig" type="text" placeholder="Origin"> -->
 </div> 
 <div id="destination">
-    <input id="searchDes" type="text" placeholder="Destination">
+    <!-- <input id="searchDes" type="text" placeholder="Destination"> -->
 </div>
-<button id='zoomto' class='btn-control'>Zoom to Route</nav>
+<button id='zoomto' class='btn-control'>Zoom to Route</button>
 
 
 </div> 
-
+<div class="information">
+<h1>Safe Ride</h1>
+<div class="headsection">
+    <p>This site allows bikers to find a safe bicycle route using the DVRPC Bicycle Level of Traffic Stress and Connectivity Analysis</p>
+    <p>Based on this network, we will assign you a bike route that not only prioritizes the <a href="">most efficient path</a> but also considers the least stressful riding experience on the existing network.
+        <h4>(<a href="">How do we do this?)</a></h4></p>
+</div>
+</div> <!-- end info div -->
 <nav id="toggle"></nav>
 <script>
     var hideDIR = function hider(){
@@ -227,7 +234,7 @@ var ltsgeoJSON = $.ajax({
 
             // Create layer from source
               map.addLayer({
-                "id": "bikelayer",
+                "id": "LTS",
                 "type": "line",
                 "source": "myData1",
                 "layout": {
@@ -249,7 +256,7 @@ var ltsgeoJSON = $.ajax({
     
  // });//ends onload function
 //toggle bike layer
-var toggleableLayerIds = [ 'bikelayer']; // add more layers
+var toggleableLayerIds = [ 'LTS']; // add more layers
 
 for (var i = 0; i < toggleableLayerIds.length; i++) {
     var id = toggleableLayerIds[i];
@@ -290,14 +297,7 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
  <script src="https://cdn.jsdelivr.net/npm/graphhopper-js-api-client/dist/graphhopper-client.js"></script>
  
 
-<div class="information">
-<h1>Safe Ride</h1>
-<div class="headsection">
-    <p>This site allows bikers to find a safe bicycle route using the DVRPC Bicycle Level of Traffic Stress and Connectivity Analysis</p>
-    <p>Based on this network, we will assign you a bike route that not only prioritizes the <a href="">most efficient path</a> but also considers the least stressful riding experience on the existing network.
-        <h4>(<a href="">How do we do this?)</a></h4></p>
-</div>
-</div> <!-- end info div -->
+
 
 
 <!-- <div id="mapid"></div>

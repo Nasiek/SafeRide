@@ -52,14 +52,15 @@
 	z-index: 1;
 	background-color: "Antiquewhite";
 }
-#toggle{
+.active{
 	position: absolute;
-	/*height: 30px;
-	width: 20px;
-*/	right: 60%;
-	top: 2%;
+
+	height: 30px;
+	width: 60px;
+/*	right: 60%;
+*/	top: 100px;
 	z-index: 1;
-	background-color: "Black";
+	background-color: #3386c0;
 }
 /*#searchboxes {
 	position: absolute;
@@ -88,4 +89,15 @@
 
 .btn-control:hover {
     background-color: #4ea0da;
+}
+
+.information {
+	position: fixed;
+	background-color: #996633;
+	height: 60%;
+	width: 800px;
+	left: 50%;
+	right: 50%;
+	top: 50%;
+	bottom: 50%;
 }
