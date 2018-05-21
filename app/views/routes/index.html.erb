@@ -6,7 +6,8 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.js'></script>
 
-    //geocoding <script src='https://unpkg.com/mapbox@1.0.0-beta10/dist/mapbox-sdk.min.js'></script>
+    <!-- geocoding -->
+        <script src='https://unpkg.com/mapbox@1.0.0-beta10/dist/mapbox-sdk.min.js'></script> 
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/0.45.0/mapbox-gl.js"></script>
 
@@ -27,6 +28,8 @@
 <!-- mapbox geocoder cdn js/css -->
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
+<!-- bootstrap -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -43,17 +46,35 @@
 <button id='zoomto' class='btn-control'>Zoom to Route</button>
 
 
-</div> 
-<div class="information">
-<h1>Safe Ride</h1>
-<div class="headsection">
-    <p>This site allows bikers to find a safe bicycle route using the DVRPC Bicycle Level of Traffic Stress and Connectivity Analysis</p>
-    <p>Based on this network, we will assign you a bike route that not only prioritizes the <a href="">most efficient path</a> but also considers the least stressful riding experience on the existing network.
-        <h4>(<a href="">How do we do this?)</a></h4></p>
 </div>
-</div> <!-- end info div -->
+
+<!--Welcome modal -->
+<div class="modal-backdrop" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header" style="background:#f6b33d -moz-linear-gradient(center top , #f6b33d 5%, #d29105 100%) repeat scroll 0 0;">
+          <a class="close" data-dismiss="modal">×</a>
+          <h3 style="color:#ffffff;">SafeRide</h3>
+        </div>
+        <div class="modal-body">
+          <p>This site allows bikers to find a safe bicycle route using the DVRPC Bicycle Level of Traffic Stress and Connectivity Analysis</p>
+    <p>Based on this network, we will assign you a bike route that not only prioritizes the <a href="">most efficient path</a> but also considers the least stressful riding experience on the existing network.
+        <h4><a href="">(How do we do this?)</a></h4></p>
+        </div>
+      </div>
+    </div>
+</div>
+
 <nav id="toggle"></nav>
 <script>
+//default modal
+$(window).load(function(){
+   setTimeout(function(){
+       $('#myModal').modal('show');
+   }, 0);
+});
+
+
     var hideDIR = function hider(){
         console.log("hi");
         $( "#instructions" ).toggle();
@@ -74,15 +95,19 @@ var geocode = client.geocodeForward('Philadelphia, PA', function(err, data, res)
   // res is the http response, including: status, headers and entity properties
 });
 geocode;
+console.log('geocode;',geocode);
 
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mapbox/outdoors-v9' //stylesheet location
-    // center: [-75.206876, 39.950782], // starting position
-    // zoom: 13 // starting zoom
+    style: 'mapbox://styles/mapbox/outdoors-v9', //stylesheet location
+    center: [-75.29465, 40.1379937], // starting position
+    zoom: 13 // starting zoom
 });
+
+
+
 //limit geocode results
-var origingeocode = map.addControl(new MapboxGeocoder({
+var origingeocode = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
 
     // limit results to US
@@ -93,20 +118,54 @@ var origingeocode = map.addControl(new MapboxGeocoder({
     bbox: [-75.2946589071447, 39.8557310196928, -74.9557749984862, 40.1379937851305],
 
     // apply a client side filter to further limit results to those strictly within
-    // the New South Wales region
+    // the Pennsylvania and New Jersey region
     filter: function (item) {
         console.log("item:",item);
         return item.context.map(function (i) {
             console.log("item.context.map:",item.context.map);
             console.log("item.context",item.context);
             // id is in the form {index}.{id} per https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
-            // find the `region` named `New South Wales`
+            // find the `region`'s named PA + NJ
             return (i.id.split('.').shift() === 'region' && (i.text === 'Pennsylvania' || 'New Jersey'));
         }).reduce(function (acc, cur) {
             return acc || cur;
         });
-    }
-}));
+    }//adding points once geocode results are given
+});
+
+map.addControl(origingeocode);
+// function addPoint(item){
+map.on('load', function() {
+// console.log(item,"item")
+map.addSource('single-point', {
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features": []
+        }
+    });
+
+    map.addLayer({
+        "id": "point",
+        "source": "single-point",
+        "type": "circle",
+        "paint": {
+            "circle-radius": 10,
+            "circle-color": "#007cbf"
+        }});
+// };
+  // addPoint();
+
+// console.log(originG,"originG");
+console.log("anything happenign origingeocode?");
+
+// originG;
+}); // end of add point
+
+origingeocode.on('result', function(ev) {
+        map.getSource('single-point').setData(ev.result.geometry);
+        console.log(ev.result.geometry,"ev.result.geometry")
+    });
 
 map.addControl(new mapboxgl.FullscreenControl());
 
@@ -269,6 +328,7 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
     link.onclick = function (e) {
         var clickedLayer = this.textContent;
         e.preventDefault();
+        console.log("preventdefault?",e.preventDefault());
         e.stopPropagation();
 
         var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
