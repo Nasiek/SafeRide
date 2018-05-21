@@ -166,7 +166,68 @@ origingeocode.on('result', function(ev) {
         map.getSource('single-point').setData(ev.result.geometry);
         console.log(ev.result.geometry,"ev.result.geometry")
     });
+// destinatin geocode bias
+//limit geocode results
+var destinationgeocode = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
 
+    // limit results to US
+    country: 'us',
+
+    // further limit results to the geographic bounds representing the region of
+    // DVRPC LTS & Connectivity Analysis
+    bbox: [-75.2946589071447, 39.8557310196928, -74.9557749984862, 40.1379937851305],
+
+    // apply a client side filter to further limit results to those strictly within
+    // the Pennsylvania and New Jersey region
+    filter: function (item) {
+        console.log("item:",item);
+        return item.context.map(function (i) {
+            console.log("item.context.map:",item.context.map);
+            console.log("item.context",item.context);
+            // id is in the form {index}.{id} per https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+            // find the `region`'s named PA + NJ
+            return (i.id.split('.').shift() === 'region' && (i.text === 'Pennsylvania' || 'New Jersey'));
+        }).reduce(function (acc, cur) {
+            return acc || cur;
+        });
+    }//adding points once geocode results are given
+});
+
+map.addControl(destinationgeocode);
+
+// function addPoint(item){
+map.on('load', function() {
+// console.log(item,"item")
+map.addSource('point', {
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features": []
+        }
+    });
+
+    map.addLayer({
+        "id": "pint",
+        "source": "point",
+        "type": "circle",
+        "paint": {
+            "circle-radius": 10,
+            "circle-color": "#007cbf"
+        }});
+// };
+  // addPoint();
+
+// console.log(originG,"originG");
+console.log("anything happenign destinationgeocode?");
+
+// originG;
+}); // end of add point
+
+destinationgeocode.on('result', function(ev) {
+        map.getSource('point').setData(ev.result.geometry);
+        console.log(ev.result.geometry,"ev.result.geometry")
+    });
 map.addControl(new mapboxgl.FullscreenControl());
 
 //mapbox route api request here
