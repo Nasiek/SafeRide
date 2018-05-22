@@ -70,7 +70,7 @@
 <script>
 var originCoord = [];
 var destinationCoord =[];
-    
+
 //default modal
 $(window).load(function(){
    setTimeout(function(){
@@ -170,7 +170,7 @@ console.log("anything happenign origingeocode?");
 origingeocode.on('result', function(ev) {
         map.getSource('single-point').setData(ev.result.geometry);
         console.log(ev.result.geometry,"ev.result.geometry")
-        var originCoord = ev.result.geometry.coordinates;
+         originCoord = ev.result.geometry.coordinates;
         console.log(originCoord);
 
     });
@@ -236,7 +236,7 @@ console.log("anything happenign destinationgeocode?");
 destinationgeocode.on('result', function(ev) {
         map.getSource('point').setData(ev.result.geometry);
         console.log(ev.result.geometry,"ev.result.geometry")
-         var destinationCoord = ev.result.geometry.coordinates;
+          destinationCoord = ev.result.geometry.coordinates;
         console.log(destinationCoord);
     });
 console.log("destinationgeocode",destinationgeocode);
@@ -333,6 +333,18 @@ var ltsgeoJSON = $.ajax({
                  data: response
              });
             //trying to add more sources to speed up render time  
+            //adding styles 
+            // var color = jQuery.getJSON( 'https://arcgis.dvrpc.org/arcgis/rest/services/AppData/BSTRESS_LTS12Islands/MapServer/0?f=pjson', [ data ], [ success ] )
+
+            var color = $.getJSON('https://arcgis.dvrpc.org/arcgis/rest/services/AppData/BSTRESS_LTS12Islands/MapServer/0?f=pjson', { get_param: 'value' }, function(data) {
+                    console.log(data);
+                });
+    
+
+             var resolution = $.getJSON('https://arcgis.dvrpc.org/arcgis/rest/services/AppData/BSTRESS_LTS12Islands/MapServer?f=pjson', {get_param: 'value'}, function(data){
+                console.log(data);
+             });
+            // console.log(resolution);
             //map.addSource("myData2", {
             //     type: "geojson",
             //     data: response[1]
