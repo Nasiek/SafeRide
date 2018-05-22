@@ -312,8 +312,6 @@ document.getElementById('zoomto').addEventListener('click', function() {
 
 //}
 map.on('load', function() {
-
-
 // add geojson source to mapbox
 var  geojson = 'https://opendata.arcgis.com/datasets/113771ce9fa0424a8b529de9b74b1bc4_0.geojson';
 console.log("geojson",geojson); 
@@ -332,26 +330,37 @@ var ltsgeoJSON = $.ajax({
                  type:"geojson",
                  data: response
              });
-            //trying to add more sources to speed up render time  
-            //adding styles 
-            // var color = jQuery.getJSON( 'https://arcgis.dvrpc.org/arcgis/rest/services/AppData/BSTRESS_LTS12Islands/MapServer/0?f=pjson', [ data ], [ success ] )
+             function costtoColor(response){
+                        for (i = 0; i < response[0].length; i++) {
+                        COST= response.properties.COST
+                        COSTstr=`${COST}`
+                        console.log(COSTstr,"1");
+                        COSTstr = COSTstr.slice(COSTstr.indexOf('.')+1);
+                        console.log(COSTstr,"2");
+                        done = false; 
+                        color = [];
+                        while (!done){
+                            console.log("3",COSTstr.length)
+                            if (COSTstr.length >= 2){
+                                num = COSTstr.slice(0,2);
+                                console.log("4",num)
+                                COSTstr = COSTstr.slice(2);
+                                console.log("5",COSTstr)
+                            } else {
+                                num = Math.floor(Math.random() * 256);
+                                console.log("6",num)
+                            }
+                            num = (num/100.0 * 255);
+                            color.push(num.toFixed(0));
+                            if (color.length == 3)
+                                {done = true;}
+                             return (`${color.join(',')}`);   
+                            console.log(`rgb( ${color.join(',')} )`);
+                        }
+                    }
+                    };
 
-            var color = $.getJSON('https://arcgis.dvrpc.org/arcgis/rest/services/AppData/BSTRESS_LTS12Islands/MapServer/0?f=pjson', { get_param: 'value' }, function(data) {
-                    console.log(data);
-                });
-    
-
-             var resolution = $.getJSON('https://arcgis.dvrpc.org/arcgis/rest/services/AppData/BSTRESS_LTS12Islands/MapServer?f=pjson', {get_param: 'value'}, function(data){
-                console.log(data);
-             });
-            // console.log(resolution);
-            //map.addSource("myData2", {
-            //     type: "geojson",
-            //     data: response[1]
-            // });
-
-            // Create layer from source
-              map.addLayer({
+                    map.addLayer({
                 "id": "LTS",
                 "type": "line",
                 "source": "myData1",
@@ -361,18 +370,15 @@ var ltsgeoJSON = $.ajax({
                     "line-cap": "round"
                 },
                 "paint": {
-                    "line-color": "#AEB6BF",
-                    "line-width": 1
-                }
+                    'line-color': costtoColor(response)
+                     }
                 
             });
-            }) //onload
-    // console.log("ltsgeoJSON",ltsgeoJSON);
-    }); //lts done
-    
-    
-    
- // });//ends onload function
+            }); //lts done
+            
+//       var popup = new mapboxgl.Popup();
+  
+  });//ends onload function
 //toggle bike layer
 var toggleableLayerIds = [ 'LTS']; // add more layers
 
@@ -403,7 +409,7 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
 
     var layers = document.getElementById('toggle');
     layers.appendChild(link);
-}
+};
 
 
 
