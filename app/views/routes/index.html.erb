@@ -330,36 +330,6 @@ var ltsgeoJSON = $.ajax({
                  type:"geojson",
                  data: response
              });
-             function costtoColor(response){
-                        for (i = 0; i < response[0].length; i++) {
-                        COST= response.properties.COST
-                        COSTstr=`${COST}`
-                        console.log(COSTstr,"1");
-                        COSTstr = COSTstr.slice(COSTstr.indexOf('.')+1);
-                        console.log(COSTstr,"2");
-                        done = false; 
-                        color = [];
-                        while (!done){
-                            console.log("3",COSTstr.length)
-                            if (COSTstr.length >= 2){
-                                num = COSTstr.slice(0,2);
-                                console.log("4",num)
-                                COSTstr = COSTstr.slice(2);
-                                console.log("5",COSTstr)
-                            } else {
-                                num = Math.floor(Math.random() * 256);
-                                console.log("6",num)
-                            }
-                            num = (num/100.0 * 255);
-                            color.push(num.toFixed(0));
-                            if (color.length == 3)
-                                {done = true;}
-                             return (`${color.join(',')}`);   
-                            console.log(`rgb( ${color.join(',')} )`);
-                        }
-                    }
-                    };
-
                     map.addLayer({
                 "id": "LTS",
                 "type": "line",
@@ -370,8 +340,17 @@ var ltsgeoJSON = $.ajax({
                     "line-cap": "round"
                 },
                 "paint": {
-                    'line-color': costtoColor(response)
+                    'line-color': {
+                        property : 'MIXID',
+                        stops: [
+                        [0.1, '#1E88E5'],
+                        [0.5, '#64B5F6'],
+                        [1,'#E53935'],
+                        [1.5, '#EF9A9A'],
+                        [2, '#795548']
+                        ]
                      }
+                    }
                 
             });
             }); //lts done
@@ -380,7 +359,7 @@ var ltsgeoJSON = $.ajax({
   
   });//ends onload function
 //toggle bike layer
-var toggleableLayerIds = [ 'LTS']; // add more layers
+var toggleableLayerIds = ['LTS']; // add more layers
 
 for (var i = 0; i < toggleableLayerIds.length; i++) {
     var id = toggleableLayerIds[i];
@@ -411,7 +390,36 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
     layers.appendChild(link);
 };
 
-
+function costtoColor(response){
+                        for (i = 0; i < response.features.length; i++) {
+                        COST = response.features[i].properties.COST;
+                        COSTstr=`${COST}`;
+                        console.log(COSTstr,"1");
+                        COSTstr = COSTstr.slice(COSTstr.indexOf('.')+1);
+                        console.log(COSTstr,"2");
+                        done = false; 
+                        color = [];
+                        while (!done){
+                            console.log("3",COSTstr.length)
+                            // if (COSTstr.length >= 2){
+                            //     num = COSTstr.slice(0,2);
+                            //     console.log("4",num);
+                            //     num2 = COSTstr.slice(2);
+                            //     console.log("5",COSTstr);
+                            //     num3 = num2.slice(2);
+                            // } else {
+                                num = Math.floor(Math.random() * 256);
+                                console.log("6",num)
+                            //}
+                            color.push(num.toFixed(0));
+                            if (color.length == 3)
+                                {done = true;}
+                        }
+                             return (`rgb(${color.join(',')})`);   
+                            
+                        };
+                    };
+                    //};
 
 </script>
 
