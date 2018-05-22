@@ -36,6 +36,7 @@
 <div id='map'></div>
 <div id='instructions'></div>
 <button id="hide" onclick='hideDIR()'></button>
+<button id="Router" onclick="getRoute()">Calculate Route</button>
 <div id="searchboxes">
 <div id="origin">
     <!-- <input id="searchOrig" type="text" placeholder="Origin"> -->
@@ -67,6 +68,9 @@
 
 <nav id="toggle"></nav>
 <script>
+var originCoord = [];
+var destinationCoord =[];
+    
 //default modal
 $(window).load(function(){
    setTimeout(function(){
@@ -103,6 +107,7 @@ var map = new mapboxgl.Map({
     center: [-75.29465, 40.1379937], // starting position
     zoom: 13 // starting zoom
 });
+
 
 
 
@@ -161,11 +166,15 @@ console.log("anything happenign origingeocode?");
 
 // originG;
 }); // end of add point
-
+//let originCoord = [];
 origingeocode.on('result', function(ev) {
         map.getSource('single-point').setData(ev.result.geometry);
         console.log(ev.result.geometry,"ev.result.geometry")
+        var originCoord = ev.result.geometry.coordinates;
+        console.log(originCoord);
+
     });
+console.log("origncoordOutsideofFunction",originCoord)
 // destinatin geocode bias
 //limit geocode results
 var destinationgeocode = new MapboxGeocoder({
@@ -223,21 +232,28 @@ console.log("anything happenign destinationgeocode?");
 
 // originG;
 }); // end of add point
-
+//let destinationCoord =[];
 destinationgeocode.on('result', function(ev) {
         map.getSource('point').setData(ev.result.geometry);
         console.log(ev.result.geometry,"ev.result.geometry")
+         var destinationCoord = ev.result.geometry.coordinates;
+        console.log(destinationCoord);
     });
+console.log("destinationgeocode",destinationgeocode);
+
+console.log("destinationCoord:",destinationCoord);
 map.addControl(new mapboxgl.FullscreenControl());
 
 //mapbox route api request here
-    map.on('load', function() {
-  getRoute();
-});
+//     map.on('load', function() {
+//   getRoute();
+// });
 
 function getRoute() {
-  var start = [-75.171741, 39.9553278];
-  var end = [-75.2116433, 39.9497359];
+  var start = originCoord;//[-75.173223, 39.958345]//
+  console.log(start);
+  var end = destinationCoord;//[-75.157215, 39.954562];//destinationCoord;
+  console.log(destinationCoord);
   var directionsRequest = 'https://api.mapbox.com/directions/v5/mapbox/cycling/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
   $.ajax({
     method: 'GET',
@@ -255,41 +271,11 @@ function getRoute() {
         }
       },
       paint: {
-        'line-width': 2
+        'line-width': 2,
+        'line-color': '#0033FF'
       }
     });
-    // this is where the code from the next step will go
-
-    map.addLayer({
-  id: 'start',
-  type: 'circle',
-  source: {
-    type: 'geojson',
-    data: {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: start
-      }
-    }
-  }
-});
-map.addLayer({
-  id: 'end',
-  type: 'circle',
-  source: {
-    type: 'geojson',
-    data: {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: end
-      }
-    }
-  }
-});
-// this is where the JavaScript from the next step will go
-
+  
 var instructions = document.getElementById('instructions');
 console.log("instructions:",instructions);
 console.log("data:",data)
