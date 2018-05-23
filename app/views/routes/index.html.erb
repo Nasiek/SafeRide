@@ -48,6 +48,14 @@
 
 
 </div>
+<nav id="toggle"></nav>
+<!-- layer slider -->
+<div class='map-overlay top'>
+    <div class='map-overlay-inner'>
+        <label>Layer opacity: <span id='slider-value'>100%</span></label>
+        <input id='slider' type='range' min='0' max='100' step='0' value='100' />
+    </div>
+</div>
 
 <!--Welcome modal -->
 <div class="modal-backdrop" id="myModal">
@@ -65,8 +73,6 @@
       </div>
     </div>
 </div>
-
-<nav id="toggle"></nav>
 <script>
 var originCoord = [];
 var destinationCoord =[];
@@ -103,7 +109,7 @@ console.log('geocode;',geocode);
 
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mapbox/outdoors-v9', //stylesheet location
+    style: 'mapbox://styles/mapbox/dark-v9', //stylesheet location
     center: [-75.29465, 40.1379937], // starting position
     zoom: 13 // starting zoom
 });
@@ -250,6 +256,7 @@ map.addControl(new mapboxgl.FullscreenControl());
 // });
 
 function getRoute() {
+  
   var start = originCoord;//[-75.173223, 39.958345]//
   console.log(start);
   var end = destinationCoord;//[-75.157215, 39.954562];//destinationCoord;
@@ -260,6 +267,7 @@ function getRoute() {
     url: directionsRequest,
   }).done(function(data) {
     var route = data.routes[0].geometry;
+    // if (id:'route')
     map.addLayer({
       id: 'route',
       type: 'line',
@@ -271,8 +279,8 @@ function getRoute() {
         }
       },
       paint: {
-        'line-width': 2,
-        'line-color': '#0033FF'
+        'line-width': 6,
+        'line-color': '#FF5722'
       }
     });
   
@@ -341,13 +349,13 @@ var ltsgeoJSON = $.ajax({
                 },
                 "paint": {
                     'line-color': {
-                        property : 'MIXID',
+                        property : 'COST',
                         stops: [
-                        [0.1, '#1E88E5'],
-                        [0.5, '#64B5F6'],
-                        [1,'#E53935'],
-                        [1.5, '#EF9A9A'],
-                        [2, '#795548']
+                        [0, '#1E88E5'],//blue
+                        [0.2, '#9CCC65'],//green#64B5F6 lighter blue
+                        [0.35,'#E53935'],//red
+                        [1.5, '#EF9A9A'],//peach
+                        [2, '#795548']//brown
                         ]
                      }
                     }
@@ -358,67 +366,83 @@ var ltsgeoJSON = $.ajax({
 //       var popup = new mapboxgl.Popup();
   
   });//ends onload function
+//slider function
+
+var slider = document.getElementById('slider');
+var sliderValue = document.getElementById('slider-value');
+
+slider.addEventListener('input', function(e) {
+        // Adjust the layers opacity. layer here is arbitrary - this could
+        // be another layer name found in your style or a custom layer
+        // added on the fly using `addSource`.
+        map.setPaintProperty('LTS', 'line-opacity', parseInt(e.target.value, 10) / 100);
+
+        // Value indicator
+        sliderValue.textContent = e.target.value + '%';
+    });
+
+
 //toggle bike layer
-var toggleableLayerIds = ['LTS']; // add more layers
+// var toggleableLayerIds = ['LTS']; // add more layers
 
-for (var i = 0; i < toggleableLayerIds.length; i++) {
-    var id = toggleableLayerIds[i];
+// for (var i = 0; i < toggleableLayerIds.length; i++) {
+//     var id = toggleableLayerIds[i];
 
-    var link = document.createElement('a');
-    link.href = '#';
-    link.className = 'active';
-    link.textContent = id;
+//     var link = document.createElement('a');
+//     link.href = '#';
+//     link.className = 'active';
+//     link.textContent = id;
 
-    link.onclick = function (e) {
-        var clickedLayer = this.textContent;
-        e.preventDefault();
-        console.log("preventdefault?",e.preventDefault());
-        e.stopPropagation();
+//     link.onclick = function (e) {
+//         var clickedLayer = this.textContent;
+//         e.preventDefault();
+//         console.log("preventdefault?",e.preventDefault());
+//         e.stopPropagation();
 
-        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+//         var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
 
-        if (visibility === 'visible') {
-            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-            this.className = '';
-        } else {
-            this.className = 'active';
-            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-        }
-    };
+//         if (visibility === 'visible') {
+//             map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+//             this.className = '';
+//         } else {
+//             this.className = 'active';
+//             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+//         }
+//     };
 
-    var layers = document.getElementById('toggle');
-    layers.appendChild(link);
-};
+//     var layers = document.getElementById('toggle');
+//     layers.appendChild(link);
+// };
 
-function costtoColor(response){
-                        for (i = 0; i < response.features.length; i++) {
-                        COST = response.features[i].properties.COST;
-                        COSTstr=`${COST}`;
-                        console.log(COSTstr,"1");
-                        COSTstr = COSTstr.slice(COSTstr.indexOf('.')+1);
-                        console.log(COSTstr,"2");
-                        done = false; 
-                        color = [];
-                        while (!done){
-                            console.log("3",COSTstr.length)
-                            // if (COSTstr.length >= 2){
-                            //     num = COSTstr.slice(0,2);
-                            //     console.log("4",num);
-                            //     num2 = COSTstr.slice(2);
-                            //     console.log("5",COSTstr);
-                            //     num3 = num2.slice(2);
-                            // } else {
-                                num = Math.floor(Math.random() * 256);
-                                console.log("6",num)
-                            //}
-                            color.push(num.toFixed(0));
-                            if (color.length == 3)
-                                {done = true;}
-                        }
-                             return (`rgb(${color.join(',')})`);   
+// function costtoColor(response){
+//                         for (i = 0; i < response.features.length; i++) {
+//                         COST = response.features[i].properties.COST;
+//                         COSTstr=`${COST}`;
+//                         console.log(COSTstr,"1");
+//                         COSTstr = COSTstr.slice(COSTstr.indexOf('.')+1);
+//                         console.log(COSTstr,"2");
+//                         done = false; 
+//                         color = [];
+//                         while (!done){
+//                             console.log("3",COSTstr.length)
+//                             // if (COSTstr.length >= 2){
+//                             //     num = COSTstr.slice(0,2);
+//                             //     console.log("4",num);
+//                             //     num2 = COSTstr.slice(2);
+//                             //     console.log("5",COSTstr);
+//                             //     num3 = num2.slice(2);
+//                             // } else {
+//                                 num = Math.floor(Math.random() * 256);
+//                                 console.log("6",num)
+//                             //}
+//                             color.push(num.toFixed(0));
+//                             if (color.length == 3)
+//                                 {done = true;}
+//                         }
+//                              return (`rgb(${color.join(',')})`);   
                             
-                        };
-                    };
+//                         };
+//                     };
                     //};
 
 </script>

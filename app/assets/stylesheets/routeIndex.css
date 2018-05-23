@@ -13,6 +13,7 @@
 	height: 10px;
 	border: 1px;
 	border-radius: 10%;
+	display: block;
 	left: 2px;
 	top: 2px;
 	background-color: #A93226;
@@ -21,6 +22,7 @@
 
 #instructions {
   position: absolute;
+  display: none;
   margin: 20px;
   width: 25%;
   top: 0;
@@ -134,5 +136,35 @@
     cursor: pointer;
     padding: 10px 20px;
     border-radius: 3px;
+}
+.map-overlay {
+    font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    position: absolute;
+    width: 25%;
+    top: 6px;
+    left: 0;
+    padding: 10px;
+}
 
+.map-overlay .map-overlay-inner {
+    background-color: #fff;
+    top: 6px;
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.map-overlay label {
+    display: block;
+    margin: 0 0 10px;
+}
+
+.map-overlay input {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    cursor: ew-resize;
 }
