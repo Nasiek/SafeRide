@@ -9,8 +9,9 @@
   pointer-events: none;
 }
 #hide {
-	width: 15px;
-	height: 10px;
+  color: white;
+	width: 80px;
+	height: 30px;
 	border: 1px;
 	border-radius: 10%;
 	display: block;
@@ -137,11 +138,25 @@
     padding: 10px 20px;
     border-radius: 3px;
 }
+
+.slides {
+  /*transform: translate(-50%, -50%);
+ -ms-transform: translate(-50%, -50%);*/
+}
+.container {
+height: 100px;
+width: 260px;
+margin-left: 40px;
+opacity: 0;
+}
+
+.container:hover {
+opacity: 1;
+}
 .map-overlay {
     font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    position: absolutes;
-    width: 25%;
-    top: 6px;
+/*    position: absolute;
+*/    top: 9px;
     left: 0;
     padding: 10px;
     display: block;
@@ -149,9 +164,9 @@
 }
 
 .map-overlay .map-overlay-inner {
-    background-color: #fff;
-    top: 6px;
-    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+/*    background-color: #fff;
+*/    /*top: 9px;*/
+    /*box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);*/
     border-radius: 3px;
     padding-right: 10px; 
     padding-left: 10px;
@@ -162,7 +177,9 @@
 
 .map-overlay label {
     display: block;
+    color: white;
     margin: 0 0 10px;
+    position: relative;
 }
 
 .map-overlay input {
@@ -177,17 +194,16 @@
 /**/
 .rmap-overlay {
     font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    position: absolute;
-    width: 25%;
-    top: 12px;
+/*    position: absolute;
+*/    
     left: 0;
     padding: 10px;
     display: block;
 }
 
 .rmap-overlay .rmap-overlay-inner {
-    background-color: #fff;
-    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+/*    background-color: #fff;
+*/    /*box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);*/
     border-radius: 3px;
     padding: 10px;
     margin-bottom: 10px;
@@ -195,7 +211,9 @@
 
 .rmap-overlay label {
     display: block;
+    color: white;
     margin: 0 0 10px;
+    position: relative;
 }
 
 .rmap-overlay input {
@@ -205,4 +223,28 @@
     position: relative;
     margin: 0;
     cursor: ew-resize;
+}
+
+
+
+input[type="range"]{
+    -webkit-appearance: none;
+    -moz-apperance: none;
+    border-radius: 6px;
+    height: 6px;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(0.15, #94A14E),
+        color-stop(0.15, #000000)
+    );
+}
+
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    background-color: #000000;
+    border: 1px solid #CECECE;
+    height: 15px;
+    width: 15px;
 }
