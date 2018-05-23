@@ -1,69 +1,93 @@
 .route {
-  margin: -10px -10px;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  right: 20px;
-  background: #3887be;
-  pointer-events: none;
+    margin: -10px -10px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    right: 20px;
+    background: #3887be;
+    pointer-events: none;
 }
+.slides {
+    width: 260px;
+    /* transform: translate(-50%, -50%); */
+    -ms-transform: translate(-50%, -50%);
+    opacity: 0;
+    height: 100px;
+    position: relative;
+}
+.container {
+    /* height: 72px; */
+    width: 260px;
+    left: 40px;
+    /* position: absolute; */
+    margin-left: 40px;
+}
+.container:hover .slides {
+	opacity: 1;
+}
+
 #hide {
-	width: 15px;
-	height: 10px;
-	border: 1px;
-	border-radius: 10%;
-	display: block;
-	left: 2px;
-	top: 2px;
-	background-color: #A93226;
-	position: absolute;	
+    /*width: 30px;
+    height: 20px;*/
+    color: white;
+    border: 3px;
+    border-radius: 10%;
+    display: block;
+    left: 2px;
+    top: 2px;
+    background-color: #A93226;
+    position: absolute;
 }
 
 #instructions {
-  position: absolute;
-  display: none;
-  margin: 20px;
-  width: 25%;
-  top: 0;
-  bottom: 0;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  overflow-y: scroll;
-  font-family: sans-serif;
+    position: absolute;
+    display: none;
+    margin: 20px;
+    width: 25%;
+    top: 0;
+    bottom: 0;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    overflow-y: scroll;
+    font-family: sans-serif;
 }
 
 #origin {
-	position: absolute;
-	height: 40px;
-	display: inline-block;
-	width: 100px;
-	left: 50%;
-	top: 2%;
-	z-index: 1;
-	background-color: "Antiquewhite";
+    position: absolute;
+    height: 40px;
+    display: inline-block;
+    width: 100px;
+    left: 50%;
+    top: 2%;
+    z-index: 1;
+    background-color: "Antiquewhite";
 }
 
 #destination {
-	position: absolute;
-	display: inline-block;
-	height: 40px;
-	width: 100px;
-	left: 50%;
-	top: 6%;
-	z-index: 1;
-	background-color: "Antiquewhite";
+    position: absolute;
+    display: inline-block;
+    height: 40px;
+    width: 100px;
+    left: 50%;
+    top: 6%;
+    z-index: 1;
+    background-color: "Antiquewhite";
 }
-.active{
-	position: absolute;
 
-	height: 30px;
-	width: 60px;
-/*	right: 60%;
-*/	top: 100px;
-	z-index: 1;
-	background-color: #3386c0;
+.active {
+    position: absolute;
+
+    height: 30px;
+    width: 60px;
+    /*	right: 60%;
+*/
+    top: 100px;
+    z-index: 1;
+    background-color: #3386c0;
 }
+
+
 /*#searchboxes {
 	position: absolute;
 	height: 50px;
@@ -73,7 +97,7 @@
 }*/
 
 .btn-control {
-    font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font: bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     background-color: #3386c0;
     color: #fff;
     position: absolute;
@@ -82,7 +106,7 @@
     z-index: 1;
     border: none;
     width: 200px;
-    margin-left:-100px;
+    margin-left: -100px;
     display: block;
     cursor: pointer;
     padding: 10px 20px;
@@ -94,35 +118,36 @@
 }
 
 #myModal {
-	position: relative;
-	background-color: #996633;
-	height: 300px;
-	width: 550px;
-	top: 50%;
-	left: 24%;
-	z-index: 1
-} 
+    position: relative;
+    background-color: #996633;
+    height: 300px;
+    width: 550px;
+    top: 50%;
+    left: 24%;
+    z-index: 1
+}
+
 .modal-body p {
-	color: white;
+    color: white;
 }
 
 .headsection p {
-	color: white;
+    color: white;
 }
 
 .modal-backdrop {
- position: fixed;
- top: 0;
- right: 0;
- bottom: 0;
- left: 0;
- z-index: 0.5;
- background-color: #333333;
- opacity:0.8; // I ADDED THIS LINE
-   }
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0.5;
+    background-color: #333333;
+    opacity: 0.8; // I ADDED THIS LINE
+}
 
 #Router {
-	font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font: bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     background-color: #3386c0;
     color: #fff;
     position: absolute;
@@ -131,29 +156,31 @@
     z-index: 1;
     border: none;
     width: 200px;
-    margin-left:-100px;
+    margin-left: -100px;
     display: block;
     cursor: pointer;
     padding: 10px 20px;
     border-radius: 3px;
 }
-.map-overlay {
-    font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    position: absolutes;
-    width: 25%;
-    top: 6px;
-    left: 0;
-    padding: 10px;
-    display: block;
 
+.map-overlay {
+    font: bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    position: absolute;
+    /* width: 25%; */
+    top: 15px;
+    left: 0;
+    padding: 8px;
+    display: block;
 }
 
 .map-overlay .map-overlay-inner {
-    background-color: #fff;
-    top: 6px;
-    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    /*    background-color: #fff;
+*/
+    top: 15px;
+    color: "white";
+    /*box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);*/
     border-radius: 3px;
-    padding-right: 10px; 
+    padding-right: 10px;
     padding-left: 10px;
     padding-bottom: 10px;
     padding-top: 0px;
@@ -163,6 +190,8 @@
 .map-overlay label {
     display: block;
     margin: 0 0 10px;
+    top: 6px;
+    color: white;
 }
 
 .map-overlay input {
@@ -174,20 +203,23 @@
     cursor: ew-resize;
 }
 
+
 /**/
+
 .rmap-overlay {
-    font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font: bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
     position: absolute;
-    width: 25%;
-    top: 12px;
+/*    width: 25%;
+*/    top: 100px;
     left: 0;
     padding: 10px;
     display: block;
 }
 
 .rmap-overlay .rmap-overlay-inner {
-    background-color: #fff;
-    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    /*background-color: #fff;*/
+    color: 'white';
+    /*box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);*/
     border-radius: 3px;
     padding: 10px;
     margin-bottom: 10px;
@@ -196,6 +228,7 @@
 .rmap-overlay label {
     display: block;
     margin: 0 0 10px;
+	color: white;
 }
 
 .rmap-overlay input {
@@ -205,4 +238,26 @@
     position: relative;
     margin: 0;
     cursor: ew-resize;
+}
+
+input[type="range"]{
+    -webkit-appearance: none;
+    -moz-apperance: none;
+    border-radius: 6px;
+    height: 6px;
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        color-stop(0.15, #94A14E),
+        color-stop(0.15, #000000)
+    );
+}
+
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    background-color: #B2BABB;
+    border: 1px solid #B2BABB;
+    height: 15px;
+    width: 15px;
 }
