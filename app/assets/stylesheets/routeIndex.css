@@ -140,8 +140,8 @@
 }
 
 .slides {
-  /*transform: translate(-50%, -50%);
- -ms-transform: translate(-50%, -50%);*/
+  transform: translate(-50%, -50%);
+ -ms-transform: translate(-50%, -50%);
 }
 .container {
 height: 100px;
@@ -155,9 +155,9 @@ opacity: 1;
 }
 .map-overlay {
     font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-/*    position: absolute;
-*/    top: 9px;
-    left: 0;
+   position: absolute;
+    top: 83px;
+    left: 100px;
     padding: 10px;
     display: block;
 
@@ -194,9 +194,9 @@ opacity: 1;
 /**/
 .rmap-overlay {
     font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-/*    position: absolute;
-*/    
-    left: 0;
+  position: absolute;
+  /*top: 75px;*/
+    left: 100px;
     padding: 10px;
     display: block;
 }
